@@ -1,11 +1,17 @@
-import Head from 'next/head'
-import Layout, { siteTitle } from '../components/layout'
-import utilStyles from '../styles/utils.module.css'
-import { getSortedPostsData } from '../lib/posts'
-import Link from 'next/link'
-import Date from '../components/date'
+import Head from 'next/head';
+import Layout, { siteTitle } from '../components/layout';
+import utilStyles from '../styles/utils.module.css';
+import { getSortedPostsData } from '../lib/posts';
+import Link from 'next/link';
+import Date from '../components/date';
+import { GetStaticProps, NextPage } from 'next';
+import { Post } from '../types';
 
-export default function Home({ allPostsData }) {
+interface Props {
+  allPostsData: Omit<Post, 'contentHtml'>[];
+}
+
+const Home: NextPage<Props> = ({ allPostsData }) => {
   return (
     <Layout home>
       <Head>
@@ -37,14 +43,15 @@ export default function Home({ allPostsData }) {
         </ul>
       </section>
     </Layout>
-  )
-}
+  );
+};
+export default Home;
 
-export async function getStaticProps() {
-  const allPostsData = getSortedPostsData()
+export const getStaticProps: GetStaticProps<Props> = async () => {
+  const allPostsData = getSortedPostsData();
   return {
     props: {
-      allPostsData
-    }
-  }
-}
+      allPostsData,
+    },
+  };
+};
